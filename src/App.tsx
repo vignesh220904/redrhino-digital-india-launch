@@ -16,7 +16,11 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      {/*
+        GitHub Pages serves this app from a sub-path (e.g. /repo-name/).
+        Vite exposes the configured base as import.meta.env.BASE_URL.
+      */}
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
