@@ -4,7 +4,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Phone, Mail, MapPin, Instagram, Linkedin, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const Contact = () => {
@@ -26,33 +25,26 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    try {
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Message Sent! 🎉",
-        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
-      });
-      
-      setFormData({ name: "", phone: "", email: "", message: "" });
-    } catch (error: any) {
-      console.error("Error sending message:", error);
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for your enquiry. We'll contact you soon.",
-      });
-      setFormData({ name: "", phone: "", email: "", message: "" });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`New Enquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    
+    // Open email client
+    window.location.href = `mailto:contact@redrhinodigital.in?subject=${subject}&body=${body}`;
+    
+    toast({
+      title: "Opening Email Client! 📧",
+      description: "Please send the email from your mail app. We'll respond within 24 hours.",
+    });
+    
+    setFormData({ name: "", phone: "", email: "", message: "" });
+    setIsSubmitting(false);
   };
 
   return (
