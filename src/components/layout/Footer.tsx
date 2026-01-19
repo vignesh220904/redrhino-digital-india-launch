@@ -33,7 +33,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://instagram.com/redrhino_degital"
+                href="https://www.instagram.com/redrhino_digital"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300"
@@ -41,7 +41,7 @@ const Footer = () => {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com/company/redrhino-digital"
+                href="https://www.linkedin.com/company/redrhino-digital"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300"

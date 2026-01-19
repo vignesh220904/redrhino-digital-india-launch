@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Phone, Mail, MapPin, Instagram, Linkedin, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const Contact = () => {
@@ -25,26 +26,33 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`New Enquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    
-    // Open email client
-    window.location.href = `mailto:contact@redrhinodigital.in?subject=${subject}&body=${body}`;
-    
-    toast({
-      title: "Opening Email Client! 📧",
-      description: "Please send the email from your mail app. We'll respond within 24 hours.",
-    });
-    
-    setFormData({ name: "", phone: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Message Sent! 🎉",
+        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+      });
+      
+      setFormData({ name: "", phone: "", email: "", message: "" });
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again or contact us via WhatsApp.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -143,7 +151,7 @@ const Contact = () => {
                   <p className="text-sm text-muted-foreground mb-4 font-medium">Connect with us</p>
                   <div className="flex items-center gap-3">
                     <a
-                      href="https://instagram.com/redrhino_degital"
+                      href="https://www.instagram.com/redrhino_digital"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent hover:shadow-button transition-all duration-300 group"
@@ -151,7 +159,7 @@ const Contact = () => {
                       <Instagram className="w-5 h-5 text-foreground group-hover:text-white transition-colors" />
                     </a>
                     <a
-                      href="https://linkedin.com/company/redrhino-digital"
+                      href="https://www.linkedin.com/company/redrhino-digital"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent hover:shadow-button transition-all duration-300 group"
