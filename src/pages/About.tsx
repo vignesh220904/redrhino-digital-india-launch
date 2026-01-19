@@ -98,16 +98,16 @@ const About = () => {
                   <div className="w-full h-full rounded-2xl bg-background flex items-center justify-center">
                     <div className="text-center p-8">
                       <div className="text-6xl md:text-7xl font-display font-bold text-gradient mb-2">
-                        100+
+                        15+
                       </div>
                       <p className="text-lg text-muted-foreground">Projects Completed</p>
                       <div className="mt-8 grid grid-cols-2 gap-6">
                         <div>
-                          <div className="text-3xl font-display font-bold text-foreground">50+</div>
+                          <div className="text-3xl font-display font-bold text-foreground">12+</div>
                           <p className="text-sm text-muted-foreground">Happy Clients</p>
                         </div>
                         <div>
-                          <div className="text-3xl font-display font-bold text-foreground">5+</div>
+                          <div className="text-3xl font-display font-bold text-foreground">1</div>
                           <p className="text-sm text-muted-foreground">Years Experience</p>
                         </div>
                       </div>
