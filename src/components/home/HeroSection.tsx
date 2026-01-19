@@ -99,9 +99,9 @@ const HeroSection = () => {
             className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
           >
             {[
-              { value: "100+", label: "Happy Clients" },
-              { value: "500+", label: "Projects Done" },
-              { value: "5+", label: "Years Experience" },
+              { value: "12+", label: "Happy Clients" },
+              { value: "15+", label: "Projects Done" },
+              { value: "1+", label: "Years Experience" },
               { value: "24/7", label: "Support" },
             ].map((stat, index) => (
               <div key={index} className="text-center">
