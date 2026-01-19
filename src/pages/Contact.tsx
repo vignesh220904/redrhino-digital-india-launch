@@ -4,7 +4,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Phone, Mail, MapPin, Instagram, Linkedin, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const Contact = () => {
@@ -31,18 +30,32 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'f70926e0-d203-4f9e-9bdd-f7bb4d2c5974',
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          message: formData.message,
+          subject: `New Enquiry from ${formData.name}`,
+        }),
       });
 
-      if (error) throw error;
+      const result = await response.json();
 
-      toast({
-        title: "Message Sent! 🎉",
-        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
-      });
-      
-      setFormData({ name: "", phone: "", email: "", message: "" });
+      if (result.success) {
+        toast({
+          title: "Message Sent! 🎉",
+          description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+        });
+        setFormData({ name: "", phone: "", email: "", message: "" });
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
     } catch (error: any) {
       console.error("Error sending message:", error);
       toast({
