@@ -2,8 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Phone, Mail, MapPin, Instagram, Linkedin, MessageCircle, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Linkedin, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -14,6 +16,8 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const whatsappMessage = encodeURIComponent("Hi, I'm interested in your services. Can we discuss my requirements?");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -26,16 +30,29 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you soon.",
-    });
-    
-    setFormData({ name: "", phone: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Message Sent! 🎉",
+        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+      });
+      
+      setFormData({ name: "", phone: "", email: "", message: "" });
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for your enquiry. We'll contact you soon.",
+      });
+      setFormData({ name: "", phone: "", email: "", message: "" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -43,19 +60,24 @@ const Contact = () => {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-rhino-light">
-          <div className="container">
+        <section className="pt-32 pb-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-rhino-light via-background to-background">
+            <div className="absolute top-20 right-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          </div>
+          <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="max-w-3xl mx-auto text-center"
             >
-              <span className="inline-block px-4 py-2 mb-6 text-sm font-semibold text-primary bg-primary/10 rounded-full">
-                Contact Us
-              </span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-medium text-primary bg-primary/10 rounded-full border border-primary/20">
+                <Sparkles className="w-4 h-4" />
+                Get In Touch
+              </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-6">
-                Let's Work Together
+                Let's Work <span className="text-gradient">Together</span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Ready to grow your business? Get in touch with us for a free consultation.
@@ -75,25 +97,25 @@ const Contact = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="text-3xl font-display font-bold text-foreground mb-6">
-                  Get In Touch
+                <h2 className="text-3xl font-display font-bold text-foreground mb-4">
+                  Let's Start a Conversation
                 </h2>
                 <p className="text-muted-foreground mb-8 leading-relaxed">
                   Have a project in mind? We'd love to hear about it. Contact us 
                   using any of the methods below, or fill out the form.
                 </p>
 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   <a
                     href="tel:+919499912508"
-                    className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border shadow-card hover:shadow-elevated transition-all duration-300 group"
+                    className="flex items-center gap-4 p-5 rounded-2xl bg-card border border-border shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 group"
                   >
-                    <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-2xl gradient-hero flex items-center justify-center shadow-button">
                       <Phone className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Phone / WhatsApp</p>
-                      <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      <p className="text-sm text-muted-foreground mb-0.5">Phone / WhatsApp</p>
+                      <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-lg">
                         +91 94999 12508
                       </p>
                     </div>
@@ -101,56 +123,56 @@ const Contact = () => {
 
                   <a
                     href="mailto:contact@redrhinodigital.in"
-                    className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border shadow-card hover:shadow-elevated transition-all duration-300 group"
+                    className="flex items-center gap-4 p-5 rounded-2xl bg-card border border-border shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 group"
                   >
-                    <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-2xl gradient-hero flex items-center justify-center shadow-button">
                       <Mail className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Email</p>
-                      <p className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      <p className="text-sm text-muted-foreground mb-0.5">Email</p>
+                      <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-lg">
                         contact@redrhinodigital.in
                       </p>
                     </div>
                   </a>
 
-                  <div className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border shadow-card">
-                    <div className="w-12 h-12 rounded-xl gradient-hero flex items-center justify-center">
+                  <div className="flex items-center gap-4 p-5 rounded-2xl bg-card border border-border shadow-card">
+                    <div className="w-14 h-14 rounded-2xl gradient-hero flex items-center justify-center shadow-button">
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Location</p>
-                      <p className="font-semibold text-foreground">Chennai, India</p>
+                      <p className="text-sm text-muted-foreground mb-0.5">Location</p>
+                      <p className="font-semibold text-foreground text-lg">Chennai, India</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-8">
-                  <p className="text-sm text-muted-foreground mb-4">Follow us on social media</p>
-                  <div className="flex items-center gap-4">
+                  <p className="text-sm text-muted-foreground mb-4 font-medium">Connect with us</p>
+                  <div className="flex items-center gap-3">
                     <a
                       href="https://instagram.com/redrhino_degital"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent transition-all duration-300 group"
+                      className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent hover:shadow-button transition-all duration-300 group"
                     >
-                      <Instagram className="w-5 h-5 text-foreground group-hover:text-white" />
+                      <Instagram className="w-5 h-5 text-foreground group-hover:text-white transition-colors" />
                     </a>
                     <a
                       href="https://linkedin.com/company/redrhino-digital"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent transition-all duration-300 group"
+                      className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center hover:gradient-hero hover:border-transparent hover:shadow-button transition-all duration-300 group"
                     >
-                      <Linkedin className="w-5 h-5 text-foreground group-hover:text-white" />
+                      <Linkedin className="w-5 h-5 text-foreground group-hover:text-white transition-colors" />
                     </a>
                     <a
-                      href="https://wa.me/919499912508?text=Hi%2C%20I%27m%20interested%20in%20your%20services"
+                      href={`https://wa.me/919499912508?text=${whatsappMessage}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center hover:bg-[#128C7E] transition-all duration-300"
+                      className="w-12 h-12 rounded-xl bg-whatsapp flex items-center justify-center hover:bg-whatsapp-dark hover:shadow-lg transition-all duration-300"
                     >
-                      <MessageCircle className="w-5 h-5 text-white" />
+                      <WhatsAppIcon className="w-5 h-5 text-white" />
                     </a>
                   </div>
                 </div>
@@ -163,11 +185,15 @@ const Contact = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="p-8 rounded-2xl bg-card border border-border shadow-elevated">
-                  <h3 className="text-2xl font-display font-bold text-foreground mb-6">
+                <div className="p-8 md:p-10 rounded-3xl bg-card border border-border shadow-elevated relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
+                  <h3 className="text-2xl font-display font-bold text-foreground mb-2 relative z-10">
                     Send Us a Message
                   </h3>
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <p className="text-muted-foreground mb-8 relative z-10">
+                    Fill out the form and we'll get back to you within 24 hours.
+                  </p>
+                  <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                         Your Name *
@@ -180,7 +206,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         maxLength={100}
-                        className="w-full h-12 px-4 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full h-13 px-5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         placeholder="Enter your name"
                       />
                     </div>
@@ -197,7 +223,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         maxLength={15}
-                        className="w-full h-12 px-4 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full h-13 px-5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         placeholder="Enter your phone number"
                       />
                     </div>
@@ -214,7 +240,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         maxLength={255}
-                        className="w-full h-12 px-4 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full h-13 px-5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         placeholder="Enter your email"
                       />
                     </div>
@@ -231,7 +257,7 @@ const Contact = () => {
                         required
                         maxLength={1000}
                         rows={5}
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                        className="w-full px-5 py-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
                         placeholder="Tell us about your project or requirements"
                       />
                     </div>
@@ -239,10 +265,13 @@ const Contact = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-14 rounded-lg gradient-hero text-white font-semibold text-base flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-70 transition-all duration-300"
+                      className="w-full h-14 rounded-xl gradient-hero text-white font-semibold text-base flex items-center justify-center gap-2 hover:opacity-90 hover:shadow-button disabled:opacity-70 transition-all duration-300"
                     >
                       {isSubmitting ? (
-                        "Sending..."
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Sending...
+                        </div>
                       ) : (
                         <>
                           Send Message

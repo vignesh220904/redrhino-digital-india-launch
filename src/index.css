@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,15 +44,19 @@
     --rhino-black: 0 0% 8%;
     --rhino-gray: 0 0% 45%;
     --rhino-light: 0 0% 97%;
+    --whatsapp: 142 70% 49%;
+    --whatsapp-dark: 142 70% 36%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(4 85% 55%) 0%, hsl(4 85% 45%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(4 85% 55%) 0%, hsl(4 85% 40%) 100%);
     --gradient-dark: linear-gradient(180deg, hsl(0 0% 8%) 0%, hsl(0 0% 12%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(4 85% 55% / 0.15) 0%, transparent 70%);
 
     /* Shadows */
-    --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
+    --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.08);
     --shadow-button: 0 8px 30px -8px hsl(4 85% 55% / 0.5);
-    --shadow-elevated: 0 20px 60px -15px hsl(0 0% 0% / 0.15);
+    --shadow-elevated: 0 25px 80px -20px hsl(0 0% 0% / 0.2);
+    --shadow-glow: 0 0 60px -10px hsl(4 85% 55% / 0.4);
   }
 
   .dark {
@@ -92,15 +96,25 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'DM Sans', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight;
+    font-family: 'Space Grotesk', sans-serif;
+    @apply font-bold tracking-tight;
   }
 }
 
 @layer utilities {
+  .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-sans {
+    font-family: 'DM Sans', sans-serif;
+  }
+
   .gradient-hero {
     background: var(--gradient-hero);
   }
@@ -109,8 +123,12 @@
     background: var(--gradient-dark);
   }
 
+  .gradient-glow {
+    background: var(--gradient-glow);
+  }
+
   .text-gradient {
-    background: linear-gradient(135deg, hsl(4 85% 55%) 0%, hsl(4 85% 45%) 100%);
+    background: linear-gradient(135deg, hsl(4 85% 55%) 0%, hsl(4 85% 40%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -126,5 +144,50 @@
 
   .shadow-elevated {
     box-shadow: var(--shadow-elevated);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Animated background */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* Hover glow effect */
+  .hover-glow {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 40px -10px hsl(4 85% 55% / 0.5);
   }
 }
