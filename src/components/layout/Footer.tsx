@@ -148,9 +148,7 @@ const Footer = () => {
           <p className="text-white/40 text-sm">
             © {new Date().getFullYear()} Redrhino Digital. All rights reserved.
           </p>
-          <p className="text-white/40 text-sm">
-            Made with ❤️ in Chennai
-          </p>
+
         </div>
       </div>
     </footer>
