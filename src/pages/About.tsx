@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CTASection from "@/components/home/CTASection";
-import { Target, Eye, Heart, Award } from "lucide-react";
+import { Target, Eye, Heart, Award, Instagram, Linkedin, Github } from "lucide-react";
 
 const values = [
   {
@@ -25,6 +25,18 @@ const values = [
     title: "Excellence",
     description: "We maintain the highest standards in everything we do.",
   },
+];
+
+const teamMembers = [
+  { name: "Vignesh G", role: "Founder & Managing Director – Marketing Strategy" },
+  { name: "Beulah Mercy A", role: "Co-Founder – Social Media & Page Management" },
+  { name: "Pranaveshwaran M K", role: "Chief Executive Officer (CEO) – Creative Strategy & Design" },
+  { name: "Vishwa S H", role: "Creative Director & Video Editor" },
+  { name: "Sreekanth S", role: "Performance Marketing & SEO Specialist" },
+  { name: "Prajit Ramachanthran", role: "AI & Software Engineer" },
+  { name: "Ruth Jesica S", role: "Business Intelligence Analyst" },
+  { name: "Sasitha S", role: "Business Intelligence Analyst" },
+  { name: "Raja Priyan", role: "Lead Web Developer & Tech Architect" },
 ];
 
 const About = () => {
@@ -119,8 +131,129 @@ const About = () => {
           </div>
         </section>
 
+        {/* Founder Section */}
+        <section className="py-20 bg-background" id="founder">
+          <div className="container">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+                Meet Our Founder
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                The visionary behind Redrhino Digital
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto"
+            >
+              <div className="bg-card rounded-2xl shadow-card p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+                {/* Photo Placeholder */}
+                <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl gradient-hero flex items-center justify-center flex-shrink-0">
+                  <span className="text-5xl font-display font-bold text-white">VG</span>
+                </div>
+
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-1">
+                    Vignesh G
+                  </h3>
+                  <p className="text-primary font-semibold mb-4">
+                    Founder & Managing Director at Redrhino Digital
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    Vignesh G is the Founder and Managing Director of Redrhino Digital, a digital marketing and technology company based in Chennai, India. He leads the company's marketing strategy, SEO initiatives, and digital growth solutions for businesses. Under his leadership, Redrhino Digital focuses on digital marketing, AI automation, and modern website development to help businesses grow online.
+                  </p>
+                  <div className="flex items-center gap-3 justify-center md:justify-start">
+                    <a
+                      href="https://instagram.com/ig.vikki_"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-muted-foreground"
+                    >
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/vignesh220904/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-muted-foreground"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://github.com/vignesh220904"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-muted-foreground"
+                    >
+                      <Github className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-20 bg-rhino-light" id="team">
+          <div className="container">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+                Our Team
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                The talented people powering Redrhino Digital
+              </p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {teamMembers.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="bg-card rounded-2xl shadow-card p-6 text-center hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className="w-16 h-16 rounded-full gradient-hero flex items-center justify-center mx-auto mb-4">
+                    <span className="text-lg font-display font-bold text-white">
+                      {member.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-display font-bold text-foreground mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {member.role}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Values */}
-        <section className="py-20 bg-rhino-light">
+        <section className="py-20 bg-background">
           <div className="container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
