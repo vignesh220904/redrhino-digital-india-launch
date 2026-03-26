@@ -36,7 +36,7 @@ const teamMembers = [
   { name: "Prajit Ramachanthran", role: "AI & Software Engineer" },
   { name: "Ruth Jesica S", role: "Business Intelligence Analyst" },
   { name: "Sasitha S", role: "Business Intelligence Analyst" },
-  { name: "Raja Priyan", role: "Lead Web Developer & Tech Architect" },
+  { name: "Rajapriyan P", role: "Lead Web Developer & Tech Architect" },
 ];
 
 const About = () => {
